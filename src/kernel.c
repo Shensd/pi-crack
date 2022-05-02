@@ -9,40 +9,26 @@
 #define OFFSET_SYS_TIMER 0x3000
 #define OFFSET_FREE_TIMER 0x04
 
+/**
+ * returns the system uptime in microseconds
+ */
+uint32_t get_uptime(void) {
+    uint32_t* system_time = PERIPHERAL_BASE + OFFSET_SYS_TIMER + OFFSET_FREE_TIMER;
+
+    return *system_time;
+}
+
 void kernel_main(void)
 {
 	uart_init();
-    // printf("MD5-CRACK-OS STARTED.\r\n");
-    printf("AAAAAAAA");
+    printf("MD5-CRACK-OS STARTED.\r\n");
 
-    while(1) {}
-
-    uint32_t* system_time = PERIPHERAL_BASE + OFFSET_SYS_TIMER + OFFSET_FREE_TIMER;
-    uint32_t last_time = *system_time;
+    uint32_t last_time = get_uptime();
     while(1) {
-        if(*system_time - last_time > 1000000) {
+        uint32_t current_time = get_uptime();
+        if(current_time - last_time > 1000000) {
             printf("%d tick\r\n", last_time);
-            last_time = *system_time;
+            last_time = current_time;
         }
     }
-    // uart_init();
-	// uart_puts("Hello, kernel World!\r\n");
- 
-	// while (1)
-	// 	uart_putc(uart_getc());
-
-    // uint32_t* system_time = PERIPHERAL_BASE + OFFSET_SYS_TIMER + OFFSET_FREE_TIMER;
-    // // for 115200, 265-270 seems to work best
-    // // for 9600, 
-    // for(unsigned int i = 2500; i < 3500; i+=10) {
-    //     uart_init(i);
-        
-    //     uint32_t last_time = *system_time;
-    //     for(unsigned int j = 0; j < 5; j++) {
-    //         while (*system_time - last_time < 500000) {}
-
-    //         printf("TEST MESSAGE %d\r\n", i);
-    //         last_time = *system_time;
-    //     }
-    // }
 }

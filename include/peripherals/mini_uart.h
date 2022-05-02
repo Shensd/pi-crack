@@ -16,9 +16,9 @@
 #define AUX_MU_STAT_REG (PBASE+0x00215064)
 #define AUX_MU_BAUD_REG (PBASE+0x00215068)
 
-#define GPIO_BASE 0x3F200000 // for raspi2 & 3, 0x20200000 for raspi1
-#define GPPUD (GPIO_BASE + 0x94)
-#define GPPUDCLK0 (GPIO_BASE + 0x98)
+// #define GPIO_BASE 0x3F200000 // for raspi2 & 3, 0x20200000 for raspi1
+// #define GPPUD (GPIO_BASE + 0x94)
+// #define GPPUDCLK0 (GPIO_BASE + 0x98)
 
 #define UART0_BASE 0x3F201000
 #define UART0_DR (UART0_BASE + 0x00)
@@ -39,17 +39,5 @@
 #define UART0_ITIP (UART0_BASE + 0x84)
 #define UART0_ITOP (UART0_BASE + 0x88)
 #define UART0_TDR (UART0_BASE + 0x8C)
-
- 
-// // The offsets for Mailbox registers
-// #define MBOX_BASE 0xB880
-// #define MBOX_READ  (MBOX_BASE + 0x00)
-// #define MBOX_STATUS (MBOX_BASE + 0x18)
-// #define MBOX_WRITE (MBOX_BASE + 0x20)
-
-// #define BAUD_RATE	9600
-// #define MHz		*1000000
-// #define SYSTEM_FREQ	250 MHz
-// #define BAUD_REG_VAL	(unsigned int)(((SYSTEM_FREQ/BAUD_RATE)/8)-1)	
 
 #endif  /*_P_MINI_UART_H */

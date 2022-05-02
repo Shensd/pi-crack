@@ -1,5 +1,12 @@
 # How To Use This
 
+## Required Packages for Building
+
+The only package needed for building is gcc utils for ARM processors, that can be installed on Debian systems using the following:
+```
+sudo apt install gcc-aarch64-linux-gnu
+```
+
 ## Real Hardware Instructions
 
 There is a bash script at the top level named `build.sh`, executing this (likely **with root permissions** since we are using loopback devices) should build the project, make a filesystem, move the needed files to the filesystem, and then unmount and produce an disk image named `disk.img`. 

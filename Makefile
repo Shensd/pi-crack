@@ -1,10 +1,10 @@
 ARMGNU ?= aarch64-linux-gnu
 
-COPS = -Wall -nostdlib -nostartfiles -ffreestanding -Iinclude -mgeneral-regs-only
-ASMOPS = -Iinclude 
-
 BUILD_DIR = build
 SRC_DIR = src
+
+COPS = -Wall -nostdlib -nostartfiles -ffreestanding -Iinclude -mgeneral-regs-only -O0
+ASMOPS = -Iinclude 
 
 all : kernel8.img
 

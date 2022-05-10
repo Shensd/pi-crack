@@ -41,9 +41,13 @@ Code from:
 	- Bootloader code, mini uart code, and other boot resources
 - https://github.com/RPi-Distro/pi-gen
 	- Very useful in writing the script for auto-generating sd card images
+- https://gist.github.com/creationix/4710780
+    - MD5 implementation
 
 Programming resources:
 - https://www.raspberrypi.org/app/uploads/2012/02/BCM2835-ARM-Peripherals.pdf
 	- Peripheral manual for the rpi's CPU
 - https://jsandler18.github.io/
 	- What lead me to the peripheral manual, plus some other good stuff
+- https://github.com/fxlin/p1-kernel
+	- Helpful for figuring out some linking issues

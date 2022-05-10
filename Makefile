@@ -10,6 +10,8 @@ all : kernel8.img
 
 clean :
 	rm -rf $(BUILD_DIR) *.img 
+	# find ${BUILD_DIR}/* ! -iname "words*" | rm -vi 
+	# rm *.img
 
 $(BUILD_DIR)/%_c.o: $(SRC_DIR)/%.c
 	mkdir -p $(@D)

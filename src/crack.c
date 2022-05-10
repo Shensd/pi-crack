@@ -5,7 +5,8 @@
  
 // These vars will contain the hash
 uint32_t h0, h1, h2, h3;
- 
+
+// MD5 function from https://gist.github.com/creationix/4710780
 void md5(uint8_t *initial_msg, size_t initial_len) {
  
     // Message (to prepare)
@@ -194,10 +195,15 @@ uint32_t strlen(char* str) {
 char* crack(uint8_t* hash) {
     // iterate over all words
     for(unsigned int i = 0; i < NUM_WORDS; i++) {
+        // 
         uint32_t len = strlen(words[i]);
         md5(words[i], len);
-        // return pointer to work if hash is successfully cracked
-        if(compare_hashes(hash)) {
+        // return word if hash is successfully cracked
+        // if(compare_hashes(hash)) {
+        if((*(uint32_t*)(hash+0) == h0) &&
+            (*(uint32_t*)(hash+4) == h1) &&
+            (*(uint32_t*)(hash+8) == h2) &&
+            (*(uint32_t*)(hash+12) == h3)) {
             return words[i];
         }
     }
@@ -210,10 +216,10 @@ char* crack(uint8_t* hash) {
  * efficient than calling crack() for each one 
  * @param hashes an array of pointers to hashes 
  * @param num_hashes the number of provided hashes
- * @param output an array of character output buffers
+ * @param output an array of character pointers for words
  * @returns number of hashes successfully cracked
  */
-uint32_t crack_multi(uint8_t** hashes, uint32_t num_hashes, char** output) {
+uint32_t crack_multi(uint8_t* hashes, uint32_t num_hashes, char* output[]) {
     // default all outputs to NULL, case for if not cracked
     for(unsigned int i = 0; i < num_hashes; i++) {
         output[i] = NULL;
@@ -223,14 +229,20 @@ uint32_t crack_multi(uint8_t** hashes, uint32_t num_hashes, char** output) {
     uint32_t cracked = 0;
     // iterate over all words
     for(unsigned int i = 0; i < NUM_WORDS; i++) {
+        // printf("%d %s\r\n", i, words[i]);
         uint32_t len = strlen(words[i]);
         // hash current word
         md5(words[i], len);
+
         for(unsigned int j = 0; j < num_hashes; j++) {
             // comparing hashes is so cheap it would be *more* expensive to keep
             // a log of already cracked ones, so just compare each one regardless
             // of if it's already cracked
-            if(compare_hashes(hashes[j])) {
+            if((*(uint32_t*)(hashes+(16*j)+0) == h0) &&
+                (*(uint32_t*)(hashes+(16*j)+4) == h1) &&
+                (*(uint32_t*)(hashes+(16*j)+8) == h2) &&
+                (*(uint32_t*)(hashes+(16*j)+12) == h3)) {
+                printf("cracked pass %d : %s\r\n", j, words[i]);
                 cracked++;
                 output[j] = words[i];
             }

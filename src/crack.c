@@ -1,5 +1,7 @@
 #include "crack.h"
 
+// #define VERBOSE
+
 // leftrotate function definition
 #define LEFTROTATE(x, c) (((x) << (c)) | ((x) >> (32 - (c))))
  
@@ -11,7 +13,8 @@ void md5(uint8_t *initial_msg, size_t initial_len) {
  
     // Message (to prepare)
     // uint8_t *msg = NULL;
-    uint8_t msg[128] = {0};
+    uint8_t msg[128];
+    fill(msg, 128, 0);
  
     // Note: All variables are unsigned 32 bit and wrap modulo 2^32 when calculating
  
@@ -192,10 +195,9 @@ uint32_t strlen(char* str) {
  *  convert a hexstring 
  * @returns a pointer to the cracked word on success, NULL on failure
  */
-char* crack(uint8_t* hash) {
+char* crack(uint8_t* hash, uint32_t* words_tested) {
     // iterate over all words
     for(unsigned int i = 0; i < NUM_WORDS; i++) {
-        // 
         uint32_t len = strlen(words[i]);
         md5(words[i], len);
         // return word if hash is successfully cracked
@@ -204,10 +206,12 @@ char* crack(uint8_t* hash) {
             (*(uint32_t*)(hash+4) == h1) &&
             (*(uint32_t*)(hash+8) == h2) &&
             (*(uint32_t*)(hash+12) == h3)) {
+            *words_tested = i;
             return words[i];
         }
     }
     // return NULL on hash not cracked
+    *words_tested = NUM_WORDS;
     return NULL;
 }
 
@@ -219,7 +223,7 @@ char* crack(uint8_t* hash) {
  * @param output an array of character pointers for words
  * @returns number of hashes successfully cracked
  */
-uint32_t crack_multi(uint8_t* hashes, uint32_t num_hashes, char* output[]) {
+uint32_t crack_multi(uint8_t* hashes, uint32_t num_hashes, char* output[], uint32_t* words_tested) {
     // default all outputs to NULL, case for if not cracked
     for(unsigned int i = 0; i < num_hashes; i++) {
         output[i] = NULL;
@@ -242,15 +246,21 @@ uint32_t crack_multi(uint8_t* hashes, uint32_t num_hashes, char* output[]) {
                 (*(uint32_t*)(hashes+(16*j)+4) == h1) &&
                 (*(uint32_t*)(hashes+(16*j)+8) == h2) &&
                 (*(uint32_t*)(hashes+(16*j)+12) == h3)) {
+#ifdef VERBOSE
                 printf("cracked pass %d : %s\r\n", j, words[i]);
+#endif // VERBOSE
                 cracked++;
                 output[j] = words[i];
             }
         }
 
         // quit if all hashes have been cracked
-        if(cracked == num_hashes) break;
+        if(cracked == num_hashes) {
+            *words_tested = i;
+            return cracked;
+        };
     }
 
+    *words_tested = NUM_WORDS;
     return cracked;
 }

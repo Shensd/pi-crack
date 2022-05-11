@@ -21,6 +21,14 @@ uint32_t fill(uint8_t* buffer, size_t size, uint8_t value) {
     return filled;
 }
 
+void* memset(void* ptr, int value, size_t num) {
+
+    for(unsigned int i = 0; i < num; i++) {
+        *(unsigned char*)(ptr+i) = (unsigned char) value;
+    }
+    return ptr;
+}
+
 // void* malloc(size_t num, size_t size) {
 //     void* start = (void*) next_heap_start;
 

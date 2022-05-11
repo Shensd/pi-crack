@@ -10,7 +10,7 @@
 #include "printf.h"
 
 int from_hex(char* hexstring, uint32_t hexlen, uint8_t* output_buffer, uint32_t max_len);
-char* crack(uint8_t* hash);
-uint32_t crack_multi(uint8_t* hashes, uint32_t num_hashes, char* output[]);
+char* crack(uint8_t* hash, uint32_t* words_tested);
+uint32_t crack_multi(uint8_t* hashes, uint32_t num_hashes, char* output[], uint32_t* words_tested);
 
 #endif // !CRACK_H

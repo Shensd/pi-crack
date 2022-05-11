@@ -27,4 +27,6 @@ uint32_t fill(uint8_t* buffer, size_t size, uint8_t value);
 
 // void free(void* ptr);
 
+void* memset(void* ptr, int value, size_t num);
+
 #endif // !MEMORY_H

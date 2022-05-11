@@ -2,6 +2,8 @@
 
 # you will probably need to run this file as sudo
 
+make -f Makefile-pi clean
+
 # mount points for disk
 ROOTFS_DIR="./mnt"
 BOOT_DIR="${ROOTFS_DIR}/boot"
@@ -40,13 +42,15 @@ mkdosfs -n boot -F 32 -v "$BOOT_DEV"
 mount "$BOOT_DEV" "$BOOT_DIR" -t vfat
 
 # build the files
-make
+make -f Makefile-pi
 
 # add files to disk
-cp build/kernel8.img extra/* "$BOOT_DIR"
+cp build-baremetal/kernel8.img extra/* "$BOOT_DIR"
 
 # unmount disk and clean up
 umount $BOOT_DIR
 losetup -d "$BOOT_DEV"
+
+rm build-baremetal -r
 
 # done!

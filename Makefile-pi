@@ -1,6 +1,6 @@
 ARMGNU ?= aarch64-linux-gnu
 
-BUILD_DIR = build
+BUILD_DIR = build-baremetal
 SRC_DIR = src
 
 COPS = -Wall -nostdlib -nostartfiles -ffreestanding -Iinclude -mgeneral-regs-only -O3
@@ -28,6 +28,6 @@ OBJ_FILES += $(ASM_FILES:$(SRC_DIR)/%.S=$(BUILD_DIR)/%_s.o)
 DEP_FILES = $(OBJ_FILES:%.o=%.d)
 -include $(DEP_FILES)
 
-kernel8.img: $(SRC_DIR)/linker.ld $(OBJ_FILES)
-	$(ARMGNU)-ld -T $(SRC_DIR)/linker.ld -o $(BUILD_DIR)/kernel8.elf  $(OBJ_FILES)
+kernel8.img: $(SRC_DIR)/linker-pi.ld $(OBJ_FILES)
+	$(ARMGNU)-ld -T $(SRC_DIR)/linker-pi.ld -o $(BUILD_DIR)/kernel8.elf  $(OBJ_FILES)
 	$(ARMGNU)-objcopy $(BUILD_DIR)/kernel8.elf -O binary $(BUILD_DIR)/kernel8.img

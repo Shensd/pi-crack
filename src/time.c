@@ -1,4 +1,5 @@
 #include "time.h"
+#include "printf.h"
 
 uint32_t get_uptime(void) {
     uint32_t* system_time = PERIPHERAL_BASE + OFFSET_SYS_TIMER + OFFSET_FREE_TIMER;

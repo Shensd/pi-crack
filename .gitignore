@@ -1,3 +1,6 @@
 build
+build-baremetal
+hashfiles
+*.big
 mnt
 disk.img

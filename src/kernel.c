@@ -16,6 +16,7 @@ uint32_t current_trial;
 
 void trial_single(char* to_crack) {
     uint8_t buffer[16];
+
     from_hex(to_crack, 32, buffer, 16);
 
     uint32_t words_tested = 0;
@@ -25,7 +26,7 @@ void trial_single(char* to_crack) {
 
     uint32_t end_time = get_uptime();
 
-    printf("%d,\"%s\",%d,%d,%d,%d,%d,%d,%s\r\n",
+    printf("%u,\"%s\",%u,%u,%u,%u,%u,%u,%s\r\n",
         current_trial++, // trial
         "single", // type
         1, // # hashes
@@ -33,13 +34,13 @@ void trial_single(char* to_crack) {
         words_tested, // # words tested
         start_time, // start time
         end_time, // end time
-        end_time - start_time, // delta
+        (uint64_t) end_time - start_time, // delta
         to_crack // target hash
         // result // cracked hash
     );
 }
 
-#define TRIAL_MULTI_MAX_HASHES 64
+
 void trial_multi(uint8_t* hashes, uint32_t num_hashes) {
     char* output[TRIAL_MULTI_MAX_HASHES];
 
@@ -50,7 +51,7 @@ void trial_multi(uint8_t* hashes, uint32_t num_hashes) {
 
     uint32_t end_time = get_uptime();
 
-    printf("%d,\"%s\",%d,%d,%d,%d,%d,%d,\r\n",
+    printf("%u,\"%s\",%u,%u,%u,%u,%u,%u,\r\n",
         current_trial++, // trial
         "multi", // type
         num_hashes, // # hashes
@@ -59,7 +60,7 @@ void trial_multi(uint8_t* hashes, uint32_t num_hashes) {
         start_time, // start time
         end_time, // end time
         end_time - start_time // delta
-        // TODO how output hash
+        // TODO how output hashes
         // TODO how ouput result
     );
 }
@@ -85,13 +86,14 @@ void kernel_main(void)
     uint32_t trial_block_index = 0;
     for(unsigned int trial = 0; trial < NUM_MULTI_TRIALS; trial++) {
         unsigned int current_trial_num_hashes = 0;
-        for(unsigned int i = trial_block_index; i < 512; i++) {
+        for(unsigned int i = trial_block_index; i < TOTAL_MULTI_TRIAL_MEMBERS; i++) {
             if(multi_trials[i] == NULL) break;
             current_trial_num_hashes++;
         }
 
-        for(unsigned int i = trial_block_index; i < current_trial_num_hashes; i++) {
-            from_hex(multi_trials[i], 32, hashes[i], 16);
+        for(unsigned int i = 0; i < current_trial_num_hashes; i++) {
+            // printf("%d %s\n", trial_block_index, multi_trials[trial_block_index+i]);
+            from_hex(multi_trials[trial_block_index+i], 32, hashes[i], 16);
         }
 
         trial_multi(hashes, current_trial_num_hashes);

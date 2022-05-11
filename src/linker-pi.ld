@@ -1,7 +1,6 @@
 SECTIONS
 {
-	/* remove this line if compiling for baremetal */
-	. = 0x80000;
+	. = 0x00;
 	.text.boot : { *(.text.boot) }
 	.text : { *(.text) }
 	. = ALIGN(0x8);

@@ -11,7 +11,8 @@ char* single_trial_hashes[NUM_SINGLE_TRIALS];
 
 #define TRIAL_MULTI_MAX_HASHES 32
 #define NUM_MULTI_TRIALS 30
-const char* const multi_trials[];
+#define TOTAL_MULTI_TRIAL_MEMBERS 527
+const char* const multi_trials[527];
 
 
 #endif // !TRIALS_H

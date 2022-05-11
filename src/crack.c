@@ -12,9 +12,8 @@ uint32_t h0, h1, h2, h3;
 void md5(uint8_t *initial_msg, size_t initial_len) {
  
     // Message (to prepare)
-    // uint8_t *msg = NULL;
-    uint8_t msg[128];
-    fill(msg, 128, 0);
+    #define BAKED_BUFFER_SIZE 64
+    uint8_t msg[BAKED_BUFFER_SIZE] = {0};
  
     // Note: All variables are unsigned 32 bit and wrap modulo 2^32 when calculating
  
@@ -48,15 +47,6 @@ void md5(uint8_t *initial_msg, size_t initial_len) {
     h1 = 0xefcdab89;
     h2 = 0x98badcfe;
     h3 = 0x10325476;
- 
-    // Pre-processing: adding a single 1 bit
-    //append "1" bit to message    
-    /* Notice: the input bytes are considered as bits strings,
-       where the first bit is the most significant bit of the byte.[37] */
- 
-    // Pre-processing: padding with zeros
-    //append "0" bit until message length in bit ≡ 448 (mod 512)
-    //append length mod (2 pow 64) to message
  
     int new_len = ((((initial_len + 8) / 64) + 1) * 64) - 8;
     
@@ -233,7 +223,6 @@ uint32_t crack_multi(uint8_t* hashes, uint32_t num_hashes, char* output[], uint3
     uint32_t cracked = 0;
     // iterate over all words
     for(unsigned int i = 0; i < NUM_WORDS; i++) {
-        // printf("%d %s\r\n", i, words[i]);
         uint32_t len = strlen(words[i]);
         // hash current word
         md5(words[i], len);

@@ -32,6 +32,7 @@ def gen_multi(hashes_dir, out_h, out_c, wordlist):
 
     out_h.write(f"""#define TRIAL_MULTI_MAX_HASHES {max_trial}
 #define NUM_MULTI_TRIALS {total_trials}
+#define TOTAL_MULTI_TRIAL_MEMBERS {sum(range(min_trial, max_trial))}
 const char* const multi_trials[];
 
 """)
